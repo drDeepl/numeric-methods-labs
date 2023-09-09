@@ -49,4 +49,17 @@ class Matrix(private val rows: Int, private val columns: Int){
         matrix[row][column] = Math.round(value * 10.0) / 10.0;
     }
 
+//    public fun substractRows(row: Int, substractedRow:Int){
+//        for(column in 0.)
+//
+//    }
+
+    public fun dotProductOnRow(row: Int, value: Double){
+        for(column in 0..matrix[row].size-1){
+            val oldValue: Double = matrix[row][column]
+            matrix[row][column] = value * oldValue
+            println("old: ${oldValue} new: ${matrix[row][column]}")
+        }
+    }
+
 }
