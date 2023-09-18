@@ -68,4 +68,32 @@ class LinearEquation (private var matrix: Matrix, private val matrixRows: Int, p
         matrix.printMatrix()
 
     }
+
+    fun solverMethodsJordanGauss(): DoubleArray{
+        val rows: Int = matrix.getRows() -1
+        val columns: Int = matrix.getColumns() -1
+        var x: DoubleArray = DoubleArray(rows+1)
+        for(k in 0..rows){
+            val pivot: Double = matrix.getValue(k,k)
+
+            for(i in 0..rows){
+                if(i != k){
+                    var d: Double = matrix.getValue(i,k) /pivot
+                    for(j in k..columns){
+                        var a_ij: Double = matrix.getValue(i,j) - (d*matrix.getValue(k,j))
+                        matrix.setValue(i,j,a_ij)
+                    }
+                }
+            }
+            matrix.printMatrix()
+            println()
+        }
+
+        for(i in 0..rows){
+            x[i]= matrix.getValue(i,i)/matrix.getValue(i,columns)
+        }
+        return x
+    }
+
+
 }
