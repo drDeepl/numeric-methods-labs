@@ -6,12 +6,12 @@ fun main(args: Array<String>) {
 //    matrixCoef.genRandomMatrix()
     println("\nMatrix Coefficient of linear equation\n")
     matrixCoef.printMatrix()
-    println("\nSystem of linear equation with matrix coeff\n")
-    linearEquation.printSystemLinearEquation()
+//    println("\nSystem of linear equation with matrix coeff\n")
+//    linearEquation.printSystemLinearEquation()
 //    linearEquation.solverMethodGauss() 2 -1 1
     println()
-
-    var xByJG: DoubleArray = linearEquation.solverMethodsJordanGauss()
+//    var xByJG: DoubleArray = linearEquation.solverMethodsJordanGauss()
+    linearEquation.solverLUDecompose()
 
 
 }

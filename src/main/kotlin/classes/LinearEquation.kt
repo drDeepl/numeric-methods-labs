@@ -69,19 +69,19 @@ class LinearEquation (private var matrix: Matrix, private val matrixRows: Int, p
 
     }
 
-    fun solverMethodsJordanGauss(): DoubleArray{
-        val rows: Int = matrix.getRows() -1
-        val columns: Int = matrix.getColumns() -1
-        var x: DoubleArray = DoubleArray(rows+1)
-        for(k in 0..rows){
-            val pivot: Double = matrix.getValue(k,k)
+    fun solverMethodsJordanGauss(): DoubleArray {
+        val rows: Int = matrix.getRows() - 1
+        val columns: Int = matrix.getColumns() - 1
+        var x: DoubleArray = DoubleArray(rows + 1)
+        for (k in 0..rows) {
+            val pivot: Double = matrix.getValue(k, k)
 
-            for(i in 0..rows){
-                if(i != k){
-                    var d: Double = matrix.getValue(i,k) /pivot
-                    for(j in k..columns){
-                        var a_ij: Double = matrix.getValue(i,j) - (d*matrix.getValue(k,j))
-                        matrix.setValue(i,j,a_ij)
+            for (i in 0..rows) {
+                if (i != k) {
+                    var d: Double = matrix.getValue(i, k) / pivot
+                    for (j in k..columns) {
+                        var a_ij: Double = matrix.getValue(i, j) - (d * matrix.getValue(k, j))
+                        matrix.setValue(i, j, a_ij)
                     }
                 }
             }
@@ -89,11 +89,49 @@ class LinearEquation (private var matrix: Matrix, private val matrixRows: Int, p
             println()
         }
 
-        for(i in 0..rows){
-            x[i]= matrix.getValue(i,i)/matrix.getValue(i,columns)
+        for (i in 0..rows) {
+            x[i] = matrix.getValue(i, i) / matrix.getValue(i, columns)
         }
         return x
     }
 
+    fun solverLUDecompose(){
+        println("\nSolve by LU Decompose\n")
+        var l: Array<DoubleArray> = Array(matrix.getRows()){DoubleArray(matrix.getRows())}
+        var u: Array<DoubleArray> = Array(matrix.getRows()){DoubleArray(matrix.getRows())}
+        val sizeMatrix: Int = matrix.getRows()-1
+        for(i in 0..sizeMatrix){
+            for(j in 0..sizeMatrix){
+             if(j < i){
+                 l[j][i] = 0.0
+             }
+             else{
+                 l[j][i] = matrix.getValue(j,i)
+                 for(k in 0..<i){
+                     l[j][i] = l[j][i] - l[j][k] * u[k][i]
+                 }
+             }
+            }
+            for(j in 0..sizeMatrix){
+                if(j <i){
+                    u[i][j] = 0.0
+                }
+                else if(j==i){
+                    u[i][j] = 1.0
+                }
+                else{
+                    u[i][j] = matrix.getValue(i,j)/l[i][i]
+                    for(k in 0..<i){
+                        u[i][j] = u[i][j] - ((l[i][k]*u[k][j])/l[i][i])
+                    }
+                }
+            }
+        }
+        println("\nL matrix\n")
+        matrix.printMatrixFree(l)
+        println("\nU matrix\n")
+        matrix.printMatrixFree(u)
+
+    }
 
 }
