@@ -22,6 +22,15 @@ class LinearEquation (private var matrix: Matrix, private val matrixRows: Int, p
         }
     }
 
+    fun getBPart(): DoubleArray{
+        var size: Int = matrix.getRows()
+        var b: DoubleArray = DoubleArray(size)
+        for(i in 0..<size){
+            b[i] = matrix.getValue(i, size)
+            println(matrix.getValue(i, size))
+        }
+        return b
+    }
     public fun printSolverSLinearE(answers: DoubleArray){
         var matrixValue: Array<DoubleArray> = matrix.getMatrix()
 
@@ -62,10 +71,33 @@ class LinearEquation (private var matrix: Matrix, private val matrixRows: Int, p
         }
     }
     public fun solverMethodGauss(){
-        directStep()
-        println("\nMatrix with one in column\n")
-        reverseStep()
-        matrix.printMatrix()
+//        directStep()
+//        println("\nMatrix with one in column\n")
+//        reverseStep()
+//        matrix.printMatrix()
+        var a: Array<DoubleArray> = matrix.getAPart()
+        var b: DoubleArray = matrix.getBPart()
+        val size: Int = a.size
+        var x: DoubleArray = DoubleArray(size)
+        for(k in 0..<size-1){
+            for(i in k+1..<size){
+                var pivot: Double = a[i][k]/a[k][k]
+                for(j in k+1..<size){
+                    a[i][j] -= pivot * a[k][j]
+                }
+                b[i] -+ pivot * b[k]
+            }
+        }
+
+
+        for(i in size-1 downTo 0){
+            var sum: Double = b[i]
+            for(j in i+1..<size){
+                sum -= a[i][j] * x[j]
+            }
+            x[i] = sum/a[i][i]
+            println("x_${i+1} = ${x[i]}")
+        }
 
     }
 
@@ -95,43 +127,63 @@ class LinearEquation (private var matrix: Matrix, private val matrixRows: Int, p
         return x
     }
 
-    fun solverLUDecompose(){
+    fun luSolve(l:Array<DoubleArray>, u:Array<DoubleArray>, b:DoubleArray){
+        val size: Int = matrix.getRows()
+        var y: DoubleArray= DoubleArray(size)
+        var x: DoubleArray = DoubleArray(size)
+
+        // Ly = b
+        for(i in 0..<size){
+            var sum: Double = 0.0
+            for(j in 0..<i){
+                sum += l[i][j] * y[j]
+            }
+            y[i] = (b[i] - sum)/l[i][i]
+        }
+        // Ux = y
+
+        for(i in size-1 downTo 0){
+            var sum: Double = 0.0
+            for(j in i+1..<size){
+                sum += u[i][j] * x[j]
+            }
+            x[i] = (y[i] - sum)/u[i][i]
+        }
+
+        for(i in 0..<x.size){
+            println("x_${i+1} = ${x[i]}")
+        }
+    }
+    fun solverLUDecomposeV2(){
         println("\nSolve by LU Decompose\n")
         var l: Array<DoubleArray> = Array(matrix.getRows()){DoubleArray(matrix.getRows())}
         var u: Array<DoubleArray> = Array(matrix.getRows()){DoubleArray(matrix.getRows())}
-        val sizeMatrix: Int = matrix.getRows()-1
-        for(i in 0..sizeMatrix){
-            for(j in 0..sizeMatrix){
-             if(j < i){
-                 l[j][i] = 0.0
-             }
-             else{
-                 l[j][i] = matrix.getValue(j,i)
-                 for(k in 0..<i){
-                     l[j][i] = l[j][i] - l[j][k] * u[k][i]
-                 }
-             }
-            }
-            for(j in 0..sizeMatrix){
-                if(j <i){
-                    u[i][j] = 0.0
+        val size = matrix.getRows()
+        for(i in 0..<size){
+            for(k in i..<size){
+                var sum: Double = 0.0
+                for(j in 0..<i){
+                    sum+= (l[i][j] * u[j][k])
                 }
-                else if(j==i){
-                    u[i][j] = 1.0
+                u[i][k] = matrix.getValue(i,k) - sum
+            }
+
+            for(k in i..<size){
+                if(i==k){
+                    l[i][k] = 1.0
                 }
                 else{
-                    u[i][j] = matrix.getValue(i,j)/l[i][i]
-                    for(k in 0..<i){
-                        u[i][j] = u[i][j] - ((l[i][k]*u[k][j])/l[i][i])
+                    var sum: Double = 0.0
+                    for(j in 0..<i){
+                        sum += (l[k][j] * u[j][i])
                     }
+                    l[k][i] = (matrix.getValue(k,i) - sum)/u[i][i]
                 }
             }
         }
-        println("\nL matrix\n")
-        matrix.printMatrixFree(l)
-        println("\nU matrix\n")
-        matrix.printMatrixFree(u)
 
+        var b: DoubleArray = getBPart()
+        luSolve(l,u,b)
     }
 
 }

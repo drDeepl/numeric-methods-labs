@@ -9,6 +9,27 @@ private val matrix: Array<DoubleArray> = arrayOf( doubleArrayOf(2.0,8.0,4.0,2.0)
         return matrix.size
     }
 
+    fun getBPart(): DoubleArray{
+        var size: Int = matrix.size
+        var b: DoubleArray = DoubleArray(size)
+        for(i in 0..<size){
+            b[i] = matrix[i][size]
+            println(matrix[i][size])
+        }
+        return b
+    }
+
+    fun getAPart(): Array<DoubleArray>{
+        var size: Int = matrix.size
+        var a: Array<DoubleArray> = Array(size){DoubleArray(size)}
+        for(i in 0..<size){
+            for(j in 0..<size){
+                a[i][j] = matrix[i][j]
+            }
+        }
+        return a
+    }
+
     public fun getColumns(): Int{
         return matrix[0].size
     }
