@@ -9,12 +9,12 @@ fun main(args: Array<String>) {
     matrixCoef.printMatrix()
 //    println("\nSystem of linear equation with matrix coeff\n")
 //    linearEquation.printSystemLinearEquation()
-    println("\nSolve by method Gauss\n")
-    linearEquation.solverMethodGauss()
-
+//    println("\nSolve by method Gauss\n")
+//    val x: DoubleArray = linearEquation.solverMethodGauss()
+    println("\nSolve by method Jordan-Gauss\n")
 //    var xByJG: DoubleArray = linearEquation.solverMethodsJordanGauss()
-//    for(i in 0..<xByJG.size){
-//        println("x_${i+1} = ${xByJG[i]}")
+////    for(i in 0..<xByJG.size){
+////        println("x_${i+1} = ${xByJG[i]}")
 //    }
 //    linearEquation.solverLUDecomposeV2()
 

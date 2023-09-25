@@ -66,63 +66,57 @@ class LinearEquation (private var matrix: Matrix, private val matrixRows: Int, p
             for(j in i+1 downTo 0){
                sum = sum - matrix.getValue(i,j)*x[j]
             }
-            x[i] = Math.round(sum/matrix.getValue(i,i) * 10.0) / 10.0
+            x[i] = sum/matrix.getValue(i,i)
             print("x${i} = ${x[i]}\n")
         }
     }
-    public fun solverMethodGauss(){
-//        directStep()
-//        println("\nMatrix with one in column\n")
-//        reverseStep()
-//        matrix.printMatrix()
-        var a: Array<DoubleArray> = matrix.getAPart()
-        var b: DoubleArray = matrix.getBPart()
-        val size: Int = a.size
-        var x: DoubleArray = DoubleArray(size)
-        for(k in 0..<size-1){
-            for(i in k+1..<size){
-                var pivot: Double = a[i][k]/a[k][k]
-                for(j in k+1..<size){
-                    a[i][j] -= pivot * a[k][j]
-                }
-                b[i] -+ pivot * b[k]
+    public fun solverMethodGauss(): DoubleArray{
+        val size: Int = matrix.getRows()
+        val x: DoubleArray = DoubleArray(size)
+        for(i in 0..<size){
+            var tmp: Double = matrix.getValue(i,i)
+            for(j in size downTo i){
+                matrix.setValue(i,j, matrix.getValue(i,j)/tmp)
             }
-        }
-
-
-        for(i in size-1 downTo 0){
-            var sum: Double = b[i]
             for(j in i+1..<size){
-                sum -= a[i][j] * x[j]
+                tmp = matrix.getValue(j,i)
+                for(k in size downTo i){
+                    var a_jk: Double = matrix.getValue(j,k) - (matrix.getValue(i,k) * tmp)
+                    matrix.setValue(j,k, a_jk)
+                }
             }
-            x[i] = sum/a[i][i]
-            println("x_${i+1} = ${x[i]}")
         }
-
+        matrix.printMatrix()
+        x[size-1] = matrix.getValue(size-1,size)
+        for(i in size-2 downTo 0){
+            x[i] = matrix.getValue(i,size)
+            for(j in i+1..<size){
+                x[i] -= matrix.getValue(i,j) * x[j]
+            }
+        }
+        return x
     }
 
     fun solverMethodsJordanGauss(): DoubleArray {
-        val rows: Int = matrix.getRows() - 1
-        val columns: Int = matrix.getColumns() - 1
-        var x: DoubleArray = DoubleArray(rows + 1)
-        for (k in 0..rows) {
-            val pivot: Double = matrix.getValue(k, k)
-
-            for (i in 0..rows) {
-                if (i != k) {
-                    var d: Double = matrix.getValue(i, k) / pivot
-                    for (j in k..columns) {
-                        var a_ij: Double = matrix.getValue(i, j) - (d * matrix.getValue(k, j))
-                        matrix.setValue(i, j, a_ij)
+        var a: Array<DoubleArray> = matrix.getMatrix()
+        val size: Int = matrix.getRows()
+        var x: DoubleArray = DoubleArray(size)
+        for(i in 0..<size){
+            for(j in 0..<size){
+                if(i != j){
+                    var ratio: Double = a[j][i]/a[i][i]
+                    for(k in 0..size){
+                        a[j][k] -= ratio * a[i][k]
                     }
                 }
             }
-            matrix.printMatrix()
-            println()
         }
 
-        for (i in 0..rows) {
-            x[i] = matrix.getValue(i, i) / matrix.getValue(i, columns)
+        matrix.printMatrixFree(a)
+        println()
+        for(i in 0..<size){
+            x[i] = a[i][size]/a[i][i]
+            println("x_${i+1} = ${x[i]}")
         }
         return x
     }
