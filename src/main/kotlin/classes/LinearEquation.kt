@@ -15,7 +15,12 @@ class LinearEquation (private var matrix: Matrix, private val matrixRows: Int, p
                 }
                 else{
                     print("${matrixValue[row-1][column-1]}x${column}")
-                    print(" + ")
+                    if(column +1 != matrixColumns) {
+                        print(" + ")
+                    }
+                    else{
+                        print(" ")
+                    }
                 }
             }
             println()
@@ -27,7 +32,7 @@ class LinearEquation (private var matrix: Matrix, private val matrixRows: Int, p
         var b: DoubleArray = DoubleArray(size)
         for(i in 0..<size){
             b[i] = matrix.getValue(i, size)
-            println(matrix.getValue(i, size))
+
         }
         return b
     }
@@ -38,7 +43,7 @@ class LinearEquation (private var matrix: Matrix, private val matrixRows: Int, p
             for(column in 1..matrixColumns-1){
 
 
-                println(matrixValue[row-1][column-1]*answers[row-1])
+
             }
             println()
         }
@@ -60,14 +65,14 @@ class LinearEquation (private var matrix: Matrix, private val matrixRows: Int, p
     public fun reverseStep(){
         var x: DoubleArray = DoubleArray(matrixRows, ){it * 0.0};
         x[matrixRows-1] = matrix.getValue(matrixRows-1, matrixColumns-1)/matrix.getValue(matrixRows-1, matrixColumns-2)
-        println(x[matrixRows-1])
+
         for(i in matrixRows-2 downTo 0){
             var sum: Double = matrix.getValue(i, matrixRows-1)
             for(j in i+1 downTo 0){
                sum = sum - matrix.getValue(i,j)*x[j]
             }
             x[i] = sum/matrix.getValue(i,i)
-            print("x${i} = ${x[i]}\n")
+
         }
     }
     public fun solverMethodGauss(): DoubleArray{
@@ -86,7 +91,6 @@ class LinearEquation (private var matrix: Matrix, private val matrixRows: Int, p
                 }
             }
         }
-        matrix.printMatrix()
         x[size-1] = matrix.getValue(size-1,size)
         for(i in size-2 downTo 0){
             x[i] = matrix.getValue(i,size)
@@ -112,16 +116,13 @@ class LinearEquation (private var matrix: Matrix, private val matrixRows: Int, p
             }
         }
 
-        matrix.printMatrixFree(a)
-        println()
         for(i in 0..<size){
             x[i] = a[i][size]/a[i][i]
-            println("x_${i+1} = ${x[i]}")
         }
         return x
     }
 
-    fun luSolve(l:Array<DoubleArray>, u:Array<DoubleArray>, b:DoubleArray){
+    fun luSolve(l:Array<DoubleArray>, u:Array<DoubleArray>, b:DoubleArray): DoubleArray{
         val size: Int = matrix.getRows()
         var y: DoubleArray= DoubleArray(size)
         var x: DoubleArray = DoubleArray(size)
@@ -144,12 +145,9 @@ class LinearEquation (private var matrix: Matrix, private val matrixRows: Int, p
             x[i] = (y[i] - sum)/u[i][i]
         }
 
-        for(i in 0..<x.size){
-            println("x_${i+1} = ${x[i]}")
-        }
+        return x
     }
-    fun solverLUDecomposeV2(){
-        println("\nSolve by LU Decompose\n")
+    fun solverLUDecomposeV2(): DoubleArray{
         var l: Array<DoubleArray> = Array(matrix.getRows()){DoubleArray(matrix.getRows())}
         var u: Array<DoubleArray> = Array(matrix.getRows()){DoubleArray(matrix.getRows())}
         val size = matrix.getRows()
@@ -177,7 +175,7 @@ class LinearEquation (private var matrix: Matrix, private val matrixRows: Int, p
         }
 
         var b: DoubleArray = getBPart()
-        luSolve(l,u,b)
+        return luSolve(l,u,b)
     }
 
 }

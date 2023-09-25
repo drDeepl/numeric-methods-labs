@@ -1,10 +1,11 @@
 package classes
 
 import kotlin.random.Random
+import java.io.File
 
 class Matrix(private val rows: Int, private val columns: Int){
-//    private val matrix: Array<DoubleArray> = Array(rows) {DoubleArray(columns)}
-private val matrix: Array<DoubleArray> = arrayOf( doubleArrayOf(2.0,8.0,4.0,2.0), doubleArrayOf(1.0,9.0,6.0,-1.0), doubleArrayOf(3.0,6.0,-2.0,1.0) )
+    private val matrix: Array<DoubleArray> = Array(rows) {DoubleArray(columns)}
+//private val matrix: Array<DoubleArray> = arrayOf( doubleArrayOf(2.0,8.0,4.0,2.0), doubleArrayOf(1.0,9.0,6.0,-1.0), doubleArrayOf(3.0,6.0,-2.0,1.0) )
     public fun getRows(): Int{
         return matrix.size
     }
