@@ -8,10 +8,10 @@ import kotlin.reflect.typeOf
 fun main(args: Array<String>) {
     var isWork: Boolean = true
     while (isWork){
-        println("\n0 - решение методом Гаусса\t1 - решение методом Джордана-Гаусса\t2 - решение методом LU разложения\t3 - выход")
+        println("\n1 - решение методом Гаусса\t2 - решение методом Джордана-Гаусса\t3 - решение методом LU разложения 4 - методом простых итераций\t0 - выход")
         val input = Scanner(System.`in`)
         val choice: Int = input.nextInt()
-        if(choice == 3){
+        if(choice == 0){
             break
         }
         val path: String = "src/resources/sle.txt"
@@ -30,20 +30,23 @@ fun main(args: Array<String>) {
         linearEquation.printSystemLinearEquation()
         var x: DoubleArray = DoubleArray(matrixCoef.getRows())
 
-        if(choice == 0){
+        if(choice == 1){
             println("\nВыбрано решение методом Гаусса\n")
             x = linearEquation.solverMethodGauss()
         }
-        else if(choice == 1){
+        else if(choice == 2){
             println("\nВыбрано решение методом Джордана-Гаусса\n")
             x = linearEquation.solverMethodsJordanGauss()
         }
-        else if(choice == 2){
+        else if(choice == 3){
             println("\nВыбрано решение методом LU разложения\n")
             x = linearEquation.solverLUDecomposeV2()
         }
-
-
+        else if (choice == 4){
+            println("\nВыбрано решение методом простых итераций\n")
+            println("Число итераций по умолчанию: 1000\nпогрешность 1/100")
+            x = linearEquation.simpleIteration(1000, 1.0/1000)
+        }
 
         for(i in 0..<x.size){
             print("x_${i+1} = ${x[i]}\t")

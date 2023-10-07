@@ -15,7 +15,6 @@ class Matrix(private val rows: Int, private val columns: Int){
         var b: DoubleArray = DoubleArray(size)
         for(i in 0..<size){
             b[i] = matrix[i][size]
-            println(matrix[i][size])
         }
         return b
     }
@@ -68,6 +67,13 @@ class Matrix(private val rows: Int, private val columns: Int){
             }
             println();
         }
+    }
+
+    fun printArray(arr: DoubleArray){
+        for(i in 0..<arr.size){
+            print("${arr[i]}\t");
+        }
+        println()
     }
 
     fun info(){
