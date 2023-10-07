@@ -8,7 +8,7 @@ import kotlin.reflect.typeOf
 fun main(args: Array<String>) {
     var isWork: Boolean = true
     while (isWork){
-        println("\n1 - решение методом Гаусса\t2 - решение методом Джордана-Гаусса\t3 - решение методом LU разложения 4 - методом простых итераций\t0 - выход")
+        println("\n1 - решение методом Гаусса\t2 - решение методом Джордана-Гаусса\t3 - решение методом LU разложения 4 - методом простых итераций\t5 - решение методом Зейделя\t0 - выход")
         val input = Scanner(System.`in`)
         val choice: Int = input.nextInt()
         if(choice == 0){
@@ -44,8 +44,13 @@ fun main(args: Array<String>) {
         }
         else if (choice == 4){
             println("\nВыбрано решение методом простых итераций\n")
-            println("Число итераций по умолчанию: 1000\nпогрешность 1/100")
+            println("Число итераций по умолчанию: 1000\nпогрешность 1/1000")
             x = linearEquation.simpleIteration(1000, 1.0/1000)
+        }
+        else if(choice == 5){
+            println("\nВыбрано решение методом Зейделя\n")
+            println("Число итераций по умолчанию: 1000\nпогрешность 1/1000")
+            x = linearEquation.seidelMethod(1000, 1.0/1000)
         }
 
         for(i in 0..<x.size){

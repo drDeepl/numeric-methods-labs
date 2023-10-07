@@ -218,4 +218,41 @@ class LinearEquation (private var matrix: Matrix, private val matrixRows: Int, p
 
     }
 
+    fun seidelMethod(maxIterations: Int, eps: Double): DoubleArray{
+        val x:DoubleArray = doubleArrayOf(0.0,0.0,0.0,0.0)
+        var mtrx: Array<DoubleArray> = matrix.getAPart()
+        val SIZE: Int = mtrx.size
+        var b: DoubleArray = matrix.getBPart()
+        var X: DoubleArray = DoubleArray(SIZE)
+        var iter: Int = 0
+        var error: Double = eps + 1
+
+        while(iter < maxIterations && error > eps){
+            for(i in 0..<SIZE){
+                X[i] = x[i]
+                x[i] = b[i]
+                for(j in 0..<SIZE){
+                    if(j != i){
+                        x[i] -= mtrx[i][j] * x[j]
+                    }
+                }
+                x[i] /= mtrx[i][i]
+            }
+
+            error = 0.0
+            for(i in 0..<SIZE){
+                error += Math.abs(X[i] - x[i])
+            }
+
+            iter += 1
+//            println()
+//            matrix.printArray(X)
+//            println()
+        }
+
+        println("Пройдено итераций: ${iter}")
+        return x
+
+    }
+
 }
